@@ -10,8 +10,8 @@
         body {
             font-family: 'Press Start 2P', cursive;
             background: linear-gradient(to bottom, #fff1eb, #ace0f9), /* pastel gradient */
-                        url('https://example.com/phoenix-background.png'); /* replace with your own image */
-            background-repeat: repeat;
+                        url('https://yourimageurl.com/phoenix-background.png'); /* replace with your own image */
+            background-repeat: no-repeat;
             background-size: cover;
             background-blend-mode: lighten;
             color: #333;
@@ -375,7 +375,6 @@
             <li><strong>ID Input:</strong> Enter a unique ID or use your wallet address.</li>
             <li><strong>Hashing Process:</strong> Your wallet address and ID transform into a numerical value using our special hashing function.</li>
             <li><strong>Attribute Assignment:</strong> This determines your Phoenix’s type, feather color, personality trait, accessory, and “rebirth level.”</li>
-            <li><strong>Staking MVT:</strong> Stake Mutual Verification Tokens (MVT) to ensure fair data exchange and enhance your Phoenix’s rarity.</li>
             <li><strong>Deterministic Results:</strong> The same wallet and ID always hatch the same Phoenix—uniquely yours!</li>
         </ol>
         <p>This approach mixes mythical randomness with consistent logic, giving you a special Phoenix friend tied directly to your wallet and ID!</p>
@@ -445,11 +444,6 @@
         const loadingContainer = document.getElementById('loading-container');
         const logArea = document.getElementById('logArea');
 
-        // Mutual Verification Token (MVT) Simulation
-        const MVT_TOTAL_SUPPLY = 1000;
-        let userMVTBalance = 100; // Starting balance
-        let stakedMVT = 0;
-
         // Phantom Wallet Integration
         const getProvider = () => {
             if ("solana" in window) {
@@ -477,7 +471,7 @@
                     logMessage("Failed to connect wallet.", "error");
                 }
             } else {
-                alert("Phantom Wallet not found. Please install Phantom Wallet extension.");
+                alert("Phantom Wallet not found. Please install the Phantom Wallet extension.");
                 window.open("https://phantom.app/", "_blank");
             }
         };
@@ -494,10 +488,10 @@
                 traits: ['Radiant', 'Strong-willed', 'Hopeful'],
                 art: `
                      .     .
-                    ...  :``..':
-                     : ````.'   :''::'
+                    ...  :\`\`..':
+                     : \`\`\`.'   :''::'
                    ..:..  :     .'' :
-                  ``.    \`:    .    .'     :
+                  \`\`.    \`:    .    .'     :
                       :    :   :   :        :
                       :   .'   :  .'         :
                       :  :    :   :          :
@@ -509,13 +503,13 @@
                 type: 'Forest Phoenix',
                 traits: ['Serene', 'Nurturing', 'Wise'],
                 art: `
-                       /\_/\
+                       /\\_/\\
                       ( o.o )
                        > ^ <
-                      /|   |\
-                     / |   | \
-                    /  |   |  \
-                   /   |___|   \
+                      /|   |\\
+                     / |   | \\
+                    /  |   |  \\
+                   /   |___|   \\
                 `
             },
             {
@@ -523,10 +517,10 @@
                 traits: ['Dreamy', 'Mysterious', 'Eternal'],
                 art: `
                       .     .
-                     ...  :``..':
-                      : ````.'   :''::'
+                     ...  :\`\`..':
+                      : \`\`\`.'   :''::'
                     ..:..  :     .'' :
-                   ``.    \`:    .    .'     :
+                   \`\`.    \`:    .    .'     :
                        :    :   :   :        :
                        :   .'   :  .'         :
                        :  :    :   :          :
@@ -543,9 +537,9 @@
                     (     )
                      | | |
                      | | |
-                    /     \
-                   /       \
-                  /         \
+                    /     \\
+                   /       \\
+                  /         \\
                 `
             },
             {
@@ -559,8 +553,8 @@
                       ~~~~~
                       |   |
                       |   |
-                     /     \
-                    /       \
+                     /     \\
+                    /       \\
                 `
             },
             {
@@ -568,9 +562,9 @@
                 traits: ['Enigmatic', 'Stealthy', 'Mysterious'],
                 art: `
                        _____
-                      /     \
+                      /     \\
                      | () () |
-                      \  ^  /
+                      \\  ^  /
                        |||||
                        |||||
                 `
@@ -579,13 +573,13 @@
                 type: 'Crystal Phoenix',
                 traits: ['Elegant', 'Precise', 'Magical'],
                 art: `
-                       /\_/\
+                       /\\_/\\
                       ( o.o )
                        > ^ <
-                      /|   |\
-                     / |   | \
-                    /  |   |  \
-                   /   |___|   \
+                      /|   |\\
+                     / |   | \\
+                    /  |   |  \\
+                   /   |___|   \\
                 `
             },
             {
@@ -613,11 +607,11 @@
 
         // Simple ID validation (customize as needed)
         function validateID(input) {
-            // As an example, require at least 4 characters
+            // Require at least 4 characters
             return input.length >= 4;
         }
 
-        // Hashing Function (same approach)
+        // Hashing Function
         function hashID(input) {
             let hash = 0;
             for (let i = 0; i < input.length; i++) {
@@ -733,50 +727,9 @@ Join me in the Phoenix fun! #CreateAPhoenix #Phoenix
         function logMessage(msg, type="info") {
             const span = document.createElement("span");
             span.classList.add(type);
-            span.innerText = msg;
+            span.innerText = msg + "\n";
             logArea.appendChild(span);
             logArea.scrollTop = logArea.scrollHeight;
-        }
-
-        // Mutual Verification Token (MVT) Simulation Functions
-        function stakeMVT(amount) {
-            if (userMVTBalance >= amount) {
-                userMVTBalance -= amount;
-                stakedMVT += amount;
-                logMessage(`Staked ${amount} MVT tokens.`);
-                updateMVTDisplay();
-                return true;
-            } else {
-                logMessage(`Insufficient MVT balance to stake ${amount} tokens.`, "error");
-                return false;
-            }
-        }
-
-        function unstakeMVT(amount) {
-            if (stakedMVT >= amount) {
-                stakedMVT -= amount;
-                userMVTBalance += amount;
-                logMessage(`Unstaked ${amount} MVT tokens.`);
-                updateMVTDisplay();
-                return true;
-            } else {
-                logMessage(`Insufficient staked MVT to unstake ${amount} tokens.`, "error");
-                return false;
-            }
-        }
-
-        function updateMVTDisplay() {
-            // Display MVT balances
-            let mvtDisplay = document.getElementById('mvt-display');
-            if (!mvtDisplay) {
-                mvtDisplay = document.createElement('div');
-                mvtDisplay.id = 'mvt-display';
-                mvtDisplay.style.marginTop = '20px';
-                mvtDisplay.style.fontSize = '0.8em';
-                mvtDisplay.style.color = '#ff4500';
-                generatorSection.appendChild(mvtDisplay);
-            }
-            mvtDisplay.textContent = `MVT Balance: ${userMVTBalance} | Staked: ${stakedMVT}`;
         }
 
         // Generate Button Event
@@ -794,11 +747,6 @@ Join me in the Phoenix fun! #CreateAPhoenix #Phoenix
                 return;
             }
 
-            // Stake MVT before generating
-            const stakeAmount = 20; // Example stake amount
-            const staked = stakeMVT(stakeAmount);
-            if (!staked) return;
-
             showLoading();
 
             // Mimic asynchronous generation
@@ -809,16 +757,12 @@ Join me in the Phoenix fun! #CreateAPhoenix #Phoenix
 
                 hideLoading();
                 displayPhoenix(newPhoenix);
-
-                // Optionally unstake MVT after successful generation
-                // Uncomment the next line to automatically unstake
-                // unstakeMVT(stakeAmount);
+                logMessage(`Phoenix "${newPhoenix.type}" created successfully.`, "success");
             }, 2000);
         });
 
         // Initialize
-        updateMVTDisplay();
-
+        // No MVT features to initialize
     })();
     </script>
 </body>
