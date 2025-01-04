@@ -466,6 +466,9 @@
                     connectWalletButton.style.display = 'none';
                     generatorSection.style.display = 'block';
                     logMessage("Wallet connected successfully.", "success");
+
+                    // Check if Phoenix already exists for this wallet
+                    checkExistingPhoenix(userWalletAddress);
                 } catch (err) {
                     console.error(err);
                     logMessage("Failed to connect wallet.", "error");
@@ -732,6 +735,23 @@ Join me in the Phoenix fun! #CreateAPhoenix #Phoenix
             logArea.scrollTop = logArea.scrollHeight;
         }
 
+        // Check if Phoenix already exists for the wallet
+        function checkExistingPhoenix(walletAddress) {
+            const phoenixData = localStorage.getItem(`phoenix_${walletAddress}`);
+            if (phoenixData) {
+                const phoenix = JSON.parse(phoenixData);
+                displayPhoenix(phoenix);
+                logMessage("A Phoenix has already been created with this wallet.", "warning");
+                // Hide the generator to prevent creating another Phoenix
+                generatorSection.style.display = 'none';
+            }
+        }
+
+        // Save Phoenix to localStorage
+        function savePhoenix(walletAddress, phoenix) {
+            localStorage.setItem(`phoenix_${walletAddress}`, JSON.stringify(phoenix));
+        }
+
         // Generate Button Event
         generateButton.addEventListener('click', () => {
             if (!userWalletAddress) {
@@ -747,6 +767,15 @@ Join me in the Phoenix fun! #CreateAPhoenix #Phoenix
                 return;
             }
 
+            // Check again if Phoenix exists (in case of race conditions)
+            const existingPhoenix = localStorage.getItem(`phoenix_${userWalletAddress}`);
+            if (existingPhoenix) {
+                alert('You have already created a Phoenix with this wallet.');
+                logMessage("Attempted to create multiple Phoenixes with the same wallet.", "warning");
+                checkExistingPhoenix(userWalletAddress);
+                return;
+            }
+
             showLoading();
 
             // Mimic asynchronous generation
@@ -758,6 +787,12 @@ Join me in the Phoenix fun! #CreateAPhoenix #Phoenix
                 hideLoading();
                 displayPhoenix(newPhoenix);
                 logMessage(`Phoenix "${newPhoenix.type}" created successfully.`, "success");
+
+                // Save the Phoenix to localStorage
+                savePhoenix(userWalletAddress, newPhoenix);
+
+                // Hide the generator to prevent creating another Phoenix
+                generatorSection.style.display = 'none';
             }, 2000);
         });
 
